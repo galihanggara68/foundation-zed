@@ -1,0 +1,11 @@
+id = "foundation"
+name = "Foundation"
+version = "0.1.0"
+schema_version = 1
+authors = ["Foundation Authors"]
+description = "Foundation (.fdn) language support for the Zed editor"
+repository = "https://github.com/galihanggara68/foundation-zed"
+
+[grammars.foundation]
+repository = "https://github.com/galihanggara68/tree-sitter-foundation"
+rev = "97c5f727c02b37ba42a4d0dddf2653bfb73ecba2"
