@@ -13,10 +13,27 @@ fn test_extension_manifest_valid() {
     assert_eq!(table.get("name").and_then(|v| v.as_str()), Some("Foundation"));
     assert_eq!(table.get("schema_version").and_then(|v| v.as_integer()), Some(1));
 
+    let lib = table.get("lib").and_then(|v| v.as_table()).expect("lib table");
+    assert_eq!(lib.get("kind").and_then(|v| v.as_str()), Some("Rust"));
+    assert_eq!(lib.get("version").and_then(|v| v.as_str()), Some("0.7.0"));
+
     let grammars = table.get("grammars").and_then(|v| v.as_table()).expect("grammars table");
     let foundation_grammar = grammars.get("foundation").and_then(|v| v.as_table()).expect("foundation grammar");
     assert!(foundation_grammar.contains_key("repository"));
-    assert!(foundation_grammar.contains_key("rev"));
+    assert_eq!(foundation_grammar.get("rev").and_then(|v| v.as_str()), Some("v0.1.1"));
+
+    let language_servers = table
+        .get("language_servers")
+        .and_then(|v| v.as_table())
+        .expect("language_servers table");
+    let foundation_lsp = language_servers
+        .get("foundation")
+        .and_then(|v| v.as_table())
+        .expect("foundation language server");
+    assert_eq!(
+        foundation_lsp.get("name").and_then(|v| v.as_str()),
+        Some("Foundation LSP")
+    );
 }
 
 #[test]

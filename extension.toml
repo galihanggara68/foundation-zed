@@ -5,7 +5,21 @@ schema_version = 1
 authors = ["Foundation Authors"]
 description = "Foundation (.fdn) language support for the Zed editor"
 repository = "https://github.com/galihanggara68/foundation-zed"
+languages = ["languages/foundation"]
+capabilities = []
+
+[lib]
+kind = "Rust"
+version = "0.7.0"
 
 [grammars.foundation]
 repository = "https://github.com/galihanggara68/tree-sitter-foundation"
-rev = "v0.1.0"
+rev = "v0.1.1"
+
+[language_servers.foundation]
+name = "Foundation LSP"
+language = "Foundation"
+languages = ["Foundation"]
+
+[language_servers.foundation.language_ids]
+Foundation = "foundation"
