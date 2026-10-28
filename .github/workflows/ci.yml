@@ -17,10 +17,13 @@ jobs:
       - name: Setup Rust Toolchain
         uses: dtolnay/rust-toolchain@stable
         with:
-          targets: wasm32-wasip1
+          targets: wasm32-wasip2
 
       - name: Run Tests
         run: cargo test
 
       - name: Build WebAssembly Extension
-        run: cargo build --target wasm32-wasip1 --release
+        run: cargo build --target wasm32-wasip2 --release
+
+      - name: Verify vendored grammar queries are in sync
+        run: make check-queries

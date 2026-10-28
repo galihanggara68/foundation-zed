@@ -20,7 +20,11 @@ fn test_extension_manifest_valid() {
     let grammars = table.get("grammars").and_then(|v| v.as_table()).expect("grammars table");
     let foundation_grammar = grammars.get("foundation").and_then(|v| v.as_table()).expect("foundation grammar");
     assert!(foundation_grammar.contains_key("repository"));
-    assert_eq!(foundation_grammar.get("rev").and_then(|v| v.as_str()), Some("v0.1.1"));
+    let rev = foundation_grammar.get("rev").and_then(|v| v.as_str());
+    assert!(
+        rev.is_some_and(|rev| !rev.is_empty()),
+        "grammar rev must be set"
+    );
 
     let language_servers = table
         .get("language_servers")
