@@ -46,14 +46,20 @@ fi
 
 fetch_grammar() {
     if [ -d "$GRAMMAR_DIR/.git" ]; then
-        git -C "$GRAMMAR_DIR" fetch --depth 1 origin "$GRAMMAR_REV" >/dev/null 2>&1 || true
+        git -C "$GRAMMAR_DIR" fetch --depth 1 origin "$GRAMMAR_REV"
+        if [ -n "$(git -C "$GRAMMAR_DIR" status --porcelain --untracked-files=no)" ]; then
+            echo "warning: $GRAMMAR_DIR has local changes; using them as-is (push them upstream, then re-run)" >&2
+            return 0
+        fi
     else
         mkdir -p "$GRAMMAR_DIR"
         git -C "$GRAMMAR_DIR" init --quiet
         git -C "$GRAMMAR_DIR" remote add origin "$GRAMMAR_REPO"
         git -C "$GRAMMAR_DIR" fetch --depth 1 origin "$GRAMMAR_REV"
     fi
-    git -C "$GRAMMAR_DIR" checkout --quiet "$GRAMMAR_REV"
+    # `git checkout <branch>` does not advance a stale branch, so reset to the
+    # fetched commit to make sure we always work against the pinned revision.
+    git -C "$GRAMMAR_DIR" reset --hard --quiet FETCH_HEAD
 }
 
 sync_queries() {
